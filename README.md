@@ -10,6 +10,7 @@ This is a simple documentation on php for me. I create this repository to note a
 - [Hello World](#Hello_World)
 - [Simple Variable](#Simple_Variable)
 - [Operator](#Operator)
+- [Control Structures](#Control_Structures)
 
 # Hello_World
 Here basic syntax to print hello world in php. 
@@ -364,4 +365,282 @@ PHP 7.0.33-57+ubuntu20.04.1+deb.sury.org+1 (cli) (built: Nov 19 2021 06:39:53) (
 Copyright (c) 1997-2017 The PHP Group
 Zend Engine v3.0.0, Copyright (c) 1998-2017 Zend Technologies
     with Zend OPcache v7.0.3
+```
+
+# Control_Structures
+PHP has some control structor like condition, loop, switch statement etc.
+
+## Condition
+***Program : 00.condition.php***
+```php
+<?php
+
+// if else condition
+$num = 32;
+
+echo ">>>> If, else if, else <<<\n";
+if($num == 0){
+    echo "Number is ZERO!!";
+    echo PHP_EOL;
+}else if($num > 0){
+    echo "Number  is Greater than 0!!";
+    echo PHP_EOL;
+}elseif($num == -3){
+  echo "Number is -3";
+  echo PHP_EOL;
+}
+else{
+    echo "Number is Less then 0!!";
+    echo PHP_EOL;
+}
+
+?>
+```
+
+***Output : 00.condition.php***
+```
+>>>> If, else if, else <<<
+Number  is Greater than 0!!
+```
+
+## Alternative Condition Syntax
+***Program : 01.alternative_condition_syntax.php***
+```php
+<?php 
+$num = 40;
+
+// indention dose't matter here
+if ($num > 0) : 
+    echo "num is greaterthen 40\n";
+elseif($num == 0):
+    echo "num is zero!!\n";
+else:
+    echo "num is less than 0\n";
+endif;
+?>
+
+
+
+<?php
+$result = "Hello";
+// alternative syntax use like this
+
+if ($result == "Bye"):
+?>
+<h1> html syntax can run here. (Bye) </h1>
+
+<?php
+elseif($result =="Hello"):
+?>
+<h1> html syntax can run here. (Hello) </h1>
+
+<?php
+endif;
+echo PHP_EOL;
+?>
+```
+
+***Ouput : 01.alternative_condition_syntax.php***
+```
+num is greaterthen 40
+
+
+
+<h1> html syntax can run here. (Hello) </h1>
+
+
+```
+
+
+## while loop
+***Program : 02.while_loop.php***
+```php
+<?php
+// here basic while loop in php
+$num = 0;
+while($num <= 5){
+    echo "\$num : $num";
+    echo PHP_EOL;
+    $num++;
+}
+
+// alternative while loop
+echo "\n>>> Print 5 to 1 by Alternative while loop syntax <<<\n";
+while(--$num):
+    echo "\$num : $num";
+    echo PHP_EOL;
+endwhile;
+
+?>
+```
+
+***Output :02.while_loop.php***
+```
+$num : 0
+$num : 1
+$num : 2
+$num : 3
+$num : 4
+$num : 5
+
+>>> Print 5 to 1 by Alternative while loop syntax <<<
+$num : 5
+$num : 4
+$num : 3
+$num : 2
+```
+
+## do while loop
+***Program : 03.do_while_loop.php***
+```php
+<?php
+// here simple do while loop
+
+$num = 0;
+
+do{
+    echo "\$num : $num";
+    echo PHP_EOL;
+    $num++;
+}while($num <= 5);
+
+?>
+```
+
+***Output : 03.do_while_loop.php***
+```
+$num : 0
+$num : 1
+$num : 2
+$num : 3
+$num : 4
+$num : 5
+```
+
+## for loop
+***Program : 04.for_loop.php***
+```php
+<?php
+// print 0 to 5 by for loop in php
+
+for($num = 0; $num <= 5; $num++){
+    echo "\$num : $num";
+    echo PHP_EOL;
+}
+
+// using alternative for loop syntax
+echo "\n>>>> print 0 to 5 by alternative for loop syntax <<<<\n";
+for($num = 0; $num <= 5; $num++):
+    echo "\$num : $num";
+    echo PHP_EOL;
+endfor;
+
+?>
+```
+
+***Output : 04.for_loop.php***
+```
+$num : 0
+$num : 1
+$num : 2
+$num : 3
+$num : 4
+$num : 5
+
+>>>> print 0 to 5 by alternative for loop syntax <<<<
+$num : 0
+$num : 1
+$num : 2
+$num : 3
+$num : 4
+$num : 5
+```
+
+## foreach loop
+***Program : 05.foreach_loop.php***
+```php
+<?php
+
+// foreach loop runing on just a array. Here example : 
+$names = [
+    "Alyath",
+    "Eren Yeager",
+    "Armin",
+    "Levi Akerman",
+    "L Lawliet"
+];
+
+// foreach loop example 
+foreach($names as $name){
+    echo "Hello, $name";
+    echo PHP_EOL;
+}
+
+// foreach loop on associative array
+echo "\n\n>>> foreach loop on associative array <<<\n";
+$person = [
+    "name" => "Eren Yeager",
+    "age" => 23,
+    "titan_power" => "Attack Titan"
+];
+
+foreach ($person as $key => $value){
+    echo "$key : $value";
+    echo PHP_EOL;
+}
+
+?>
+```
+
+***Output : 05.foreach_loop.php***
+```
+Hello, Alyath
+Hello, Eren Yeager
+Hello, Armin
+Hello, Levi Akerman
+Hello, L Lawliet
+
+
+>>> foreach loop on associative array <<<
+name : Eren Yeager
+age : 23
+titan_power : Attack Titan
+```
+
+## break and continue
+In php break and continue work like another programming language what do with those keyword. Nothing else.
+
+## switch
+
+***Program : 06.switch.php***
+```php
+<?php
+
+$number = 5;
+
+// basic switch in php : 
+
+switch($number){
+    case 2 : 
+        echo "number is two\n";
+        break;
+    case 3 : 
+        echo "number is three\n";
+        break;
+    case 4 :
+        echo "number is four\n";
+        break;
+    case 5 : 
+        echo "number is five\n";
+        break;
+    default : 
+        echo "number is unknown\n";
+}
+
+?>
+```
+
+***Ouput : 06.switch.php***
+```
+number is five
 ```
