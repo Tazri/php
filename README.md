@@ -11,6 +11,7 @@ This is a simple documentation on php for me. I create this repository to note a
 - [Simple Variable](#Simple_Variable)
 - [Operator](#Operator)
 - [Control Structures](#Control_Structures)
+- [Data Type](#Data_Type)
 
 # Hello_World
 Here basic syntax to print hello world in php. 
@@ -643,4 +644,90 @@ switch($number){
 ***Ouput : 06.switch.php***
 ```
 number is five
+```
+
+# Data_Type
+Here this section I Describe about data type in php. Start with array. Also I use w3 school reference. 
+
+
+## String
+
+***Program : 00.string.php***
+```php
+<?php
+$message = "Hello, World!";
+
+echo "Message is : $message\n";
+
+// apply string method on message 
+// strlen return the string length
+echo "strlen(\$message) : ", strlen($message),"\n";
+
+// str_word_count return how many word contain this string
+echo "str_word_count(\$message) : ",str_word_count($message),"\n";
+
+// strrev reverse the string
+echo "strrev(\$message) : ",strrev($message),"\n";
+
+// strpos() search position of word in string
+echo "strpos(\$message,\"World!\") : ", strpos($message,"World!"),"\n";
+
+// str_replace()
+/**
+ * str_replace(word,replace_by,string);
+ * 
+ */
+echo "str_replace(\"World!\",\"Universe!\",\$message) : ", str_replace("World!","Universe!",$message),"\n";
+
+
+echo "At last Message is : $message\n";
+?>
+```
+
+***Output : 00.string.php***
+```
+Message is : Hello, World!
+strlen($message) : 13
+str_word_count($message) : 2
+strrev($message) : !dlroW ,olleH
+strpos($message,"World!") : 7
+str_replace("World!","Universe!",$message) : Hello, Universe!
+At last Message is : Hello, World!
+```
+
+## number
+
+***Program : 01.number.php***
+```php
+<?php
+
+/**
+ * Here some method for number
+ * is_int() -- check is int or not 
+ * is_float() -- check is float or not
+ * is_nan() -- check is nan or not
+ * is_infinit() -- check is infinit or not
+ * 
+ */
+
+echo "PHP_INT_MAX : ",PHP_INT_MAX,"\n";
+echo "PHP_INT_MIN : ",PHP_INT_MIN,"\n";
+echo "PHP_INT_SIZE : ",PHP_INT_SIZE,"\n";
+
+// convertion string
+echo "(int) 3.46 : ", (int)3.46, "\n";
+echo "(float) 3 : ",(float)3,"\n";
+echo "(int) \"3\" : ",(int)"3","\n";
+
+?>
+```
+
+***Output : 01.number.php***
+```
+PHP_INT_MAX : 9223372036854775807
+PHP_INT_MIN : -9223372036854775808
+PHP_INT_SIZE : 8
+(int) 3.46 : 3
+(float) 3 : 3
+(int) "3" : 3
 ```
