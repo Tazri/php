@@ -646,6 +646,104 @@ switch($number){
 number is five
 ```
 
+## function
+***Program : 07.function.php***
+```php
+<?php
+/**
+ * Here structure of declear function in php
+ * function function_name(arguments list with default parameter){
+ * 
+ * execute some syntax here.
+ * 
+ * return or not as your whish
+ * }
+ */
+
+function operation($function, $number_one, $number_two){
+    /**
+     * Here $function is function name as string.
+     * You called this function like this as well.
+     */
+   return $function($number_one,$number_two);
+}
+
+function  function_one($num_one,$num_two){
+    return $num_one + $num_two;
+}
+
+function function_two($num_one,$num_two){
+    return $num_one * $num_two;
+}
+
+function hello($name = "Anonymous"){
+    echo "Hello, ",$name,"\n";
+}
+
+// you can not store the function in variable but you can store function name in variable
+$sum = "function_one";
+$multiply = "function_two";
+
+echo "operation(\$sum,3,23) : ", operation($sum,3,23),"\n";
+echo "operation(\$multiply,3,3) : ", operation($multiply,3,3),"\n";
+$what_return_hello = hello("Alayth");
+hello();
+echo "\$what_return_hello : $what_return_hello\n";
+
+?>
+```
+
+***Ouput : 07.function.php***
+```
+operation($sum,3,23) : 26
+operation($multiply,3,3) : 9
+Hello, Alayth
+Hello, Anonymous
+$what_return_hello : 
+```
+
+## strict function
+***Program : 08.strict_function.php***
+```php
+<?php 
+/**
+ * First enabled the strict for create strict type
+ * function here.
+ * 
+ */
+declare(strict_types = 1); // enabled strict first
+
+// declear strict function structure
+/**
+ * function function_name(argument list with type) : return_type{
+ *  // here code
+ * }
+ * 
+ * return type as your whish to add.
+ * 
+ */
+
+function hello(string $name = "anonymous"):int{
+   echo "Hello, $name\n";
+   // return "322"; // generate error
+   return 322;
+}
+
+$number = hello("Alyath");
+echo "\$number : $number\n";
+
+// hello(32); // generate error
+
+
+?>
+```
+
+***Output : 08:strict_function.php***
+```
+Hello, Alyath
+$number : 322
+```
+
 # Data_Type
 Here this section I Describe about data type in php. Start with array. Also I use w3 school reference. 
 
@@ -730,4 +828,187 @@ PHP_INT_SIZE : 8
 (int) 3.46 : 3
 (float) 3 : 3
 (int) "3" : 3
+```
+
+## Array
+***Program : 02.array.php***
+```php
+<?php
+// basic way to declear array in php
+$names = array("Eren Yeager","Armin","Mikasa Akerman","Levi Akerman");
+
+var_dump($names);
+
+// count() return length of array
+echo "count(\$names) : ",count($names);
+echo PHP_EOL;
+
+// print array by indexed
+echo "\n\n>>> Print Value of Array by Index Number <<<\n";
+echo "\$names[0] : ",$names[0],"\n";
+echo "\$names[1] : ",$names[1],"\n";
+echo "\$names[2] : ",$names[2],"\n";
+echo "\$names[3] : ",$names[3],"\n";
+// echo "\$names[-1] : ",$names[-1],"\n"; // can not work here
+
+// change value by index
+$names[0] = "Erwin Smith";
+echo "After first value change \$names[0] : ",$names[0],"\n";
+
+// loop through on array
+echo "\n>>> Foreach Loop Through On Array <<<\n";
+foreach($names as $name){
+    echo "Hello, $name!";
+    echo PHP_EOL;
+}
+?>
+```
+
+***Output : 02.array.php***
+```
+array(4) {
+  [0]=>
+  string(11) "Eren Yeager"
+  [1]=>
+  string(5) "Armin"
+  [2]=>
+  string(14) "Mikasa Akerman"
+  [3]=>
+  string(12) "Levi Akerman"
+}
+count($names) : 4
+
+
+>>> Print Value of Array by Index Number <<<
+$names[0] : Eren Yeager
+$names[1] : Armin
+$names[2] : Mikasa Akerman
+$names[3] : Levi Akerman
+After first value change $names[0] : Erwin Smith
+
+>>> Foreach Loop Through On Array <<<
+Hello, Erwin Smith!
+Hello, Armin!
+Hello, Mikasa Akerman!
+Hello, Levi Akerman!
+```
+
+## Associative Array
+***Program : 03.associative_array.php***
+```php
+<?php 
+/**
+ * Associative array is a array which store values by
+ * key value pairs. Here example : 
+ * array("key" => "value","key" => "value");
+ * 
+ */
+
+$person = array(
+    "name" => "Alatyh",
+    "age" => 33333,
+    "type" => "red giants"
+);
+
+echo "\$person[\"name\"] : ",$person["name"],"\n";
+
+// foreach loop on associative array
+echo "\n\n>>> foreach loop on associative array <<<\n";
+foreach($person as $person_topics => $value){
+    echo "$person_topics : $value";
+    echo PHP_EOL;
+} 
+
+?>
+```
+
+***Output : 03.associative_array.php***
+```
+$person["name"] : Alatyh
+
+
+>>> foreach loop on associative array <<<
+name : Alatyh
+age : 33333
+type : red giants
+```
+
+## Sorting Array
+***Program : 04.sort_array.php***
+```php
+<?php
+// another way declare array
+$numbers = [32,2,4,5];
+$names = ["Erwin Smith","Xenon","Armin"];
+$person = [
+    "names" => "Eren Yeager",
+    "titan power" => "attack Titan",
+    "Nationality" => "Eldians"
+];
+
+// function to print array
+function print_array($array){
+    echo "[ ";
+    foreach($array as $value){
+        echo "$value, ";
+    }
+    echo "]";
+}
+
+// print both array
+echo "\$numbers : ",print_array($numbers),"\n";
+echo "\$names : ",print_array($names),"\n";
+
+// sort() sort arrays in accending order
+sort($numbers);
+sort($names);
+echo "\n >>> After Apply Sort Method on Both Array <<<\n";
+echo "\$numbers : ",print_array($numbers),"\n";
+echo "\$names : ",print_array($names),"\n";
+
+// rsort() // sort array in deccending order
+rsort($numbers);
+rsort($names);
+echo "\n >>> After Apply Sort Method on Both Array <<<\n";
+echo "\$numbers : ",print_array($numbers),"\n";
+echo "\$names : ",print_array($names),"\n";
+
+
+// asort(); sort associative array in accending order, according to the value
+asort($person);
+echo "\n>>> After Apply asort on person<<<\n";
+var_dump($person);
+
+/**
+ * more method
+ * ksrot() sort associative array in accending order, according to the key
+ * arsort() sort associative array in deccending order, according to the value
+ * krsort() sort associative array in deccending order, according to the key
+ * 
+ */
+?>
+```
+
+***Output : 04.sort_array.php***
+```
+$numbers : [ 32, 2, 4, 5, ]
+$names : [ Erwin Smith, Xenon, Armin, ]
+
+ >>> After Apply Sort Method on Both Array <<<
+$numbers : [ 2, 4, 5, 32, ]
+$names : [ Armin, Erwin Smith, Xenon, ]
+
+ >>> After Apply Sort Method on Both Array <<<
+$numbers : [ 32, 5, 4, 2, ]
+$names : [ Xenon, Erwin Smith, Armin, ]
+
+>>> After Apply asort on person<<<
+array(3) {
+  ["Nationality"]=>
+  string(7) "Eldians"
+  ["names"]=>
+  string(11) "Eren Yeager"
+  ["titan power"]=>
+  string(12) "attack Titan"
+}
 ```
