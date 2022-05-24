@@ -12,6 +12,9 @@ This is a simple documentation on php for me. I create this repository to note a
 - [Operator](#Operator)
 - [Control Structures](#Control_Structures)
 - [Data Type](#Data_Type)
+- [Superglobals](#Superglobals)
+- [Methods](#Methods)
+- [File Handling](#File_Handling)
 
 # Hello_World
 Here basic syntax to print hello world in php. 
@@ -1011,4 +1014,301 @@ array(3) {
   ["titan power"]=>
   string(12) "attack Titan"
 }
+```
+
+# Superglobals
+Some predefined variable in php are "Superglobals" which means that they are accessible, regardless of scope - and you can access them from any function, class or file without having to do anything special. Here descibe some superglobals variable.
+
+## GLOBALS
+***Program : 00.globals.php***
+```php
+<?php
+
+$number_one = 23;
+$name_of_star = "Alyath";
+
+/**
+ * $GLOBALS is php superglobal variable which is used to access gobals variable 
+ * from anywhere in php script.
+ *
+ * $Globals is one kind of php associative array
+ * 
+ */
+
+ function afdkljaldf(){
+    echo "\n>>>Here access global variable by \$GLOBALS<<<\n";
+    echo "\$GLOBALS['number_one'] : ",$GLOBALS['number_one'],"\n";
+    echo "\$GLOBALS['name_of_star'] : ",$GLOBALS['name_of_star'],"\n";
+ }
+
+ $call_me = 'afdkljaldf';
+
+ $call_me();
+?>
+```
+
+***Output : 00.globals.php***
+```
+
+>>>Here access global variable by $GLOBALS<<<
+$GLOBALS['number_one'] : 23
+$GLOBALS['name_of_star'] : Alyath
+```
+
+## _SERVER
+***Program : 01._server.php***
+```php
+<?php
+/**
+ * $_SERVER superglobals which holds infromation about headers, path and script
+ * location.
+ * 
+ */
+
+echo "\$_SERVER['PHP_SELF'] : ",$_SERVER['PHP_SELF'],"\n";
+echo "\$_SERVER['SCRIPT_NAME'] : ",$_SERVER['SCRIPT_NAME'],"\n";
+
+/**
+ * $_SERVER[value];
+ * Here some value describe : 
+ * SERVER_NAME // return the name of host server
+ * SERVER_PROTOCOL // return the name and rivision of the infromation protocol
+ * REQUEST_METHOD // return the request method used to access the page
+ * 
+ */
+?>
+```
+
+***Output : 01._server.php***
+```
+$_SERVER['PHP_SELF'] : 01._server.php
+$_SERVER['SCRIPT_NAME'] : 01._server.php
+```
+
+## _REQUEST
+Here example of _REQUEST : 
+
+# Methods
+Here I explain some built in function like date, time,file handling etc;
+
+## Regex
+***Program : 00.regex.php***
+```php
+<?php
+/**
+ * PHP important regex function
+ * preg_match() return 1 if the pattern was found in the string otherwise return 0.
+ * preg_match_all() return number of times the pattern was found in the string.
+ * preg_replace() return string where matched patterns have been replaced with another string.
+ * 
+ */
+
+ // preg_match();
+ $sentence = "Hello, Universe! I am Tazri. Do you know me? Here I come to tell you about myself. I am nothing but a human. Who is totally borken inside and show the outside front of world that everything ok with a smile.";
+ $name_regex = "/Tazri/i";
+
+ echo "The Sentence : \n-------------------------", $sentence,"\n-------------------------\n";
+ echo "\$name_regex : $name_regex\n";
+
+ echo "preg_match(\$name_regex,\$sentence) : ",preg_match($name_regex,$sentence);
+ echo PHP_EOL;
+
+ echo "preg_match_all('/am?/i',\$sentence) : ",preg_match_all('/am?/i',$sentence);
+ echo PHP_EOL;
+
+/**
+ * preg_replace(
+ * $pattern,
+ * "replace by",
+ * "sentence or word
+ * )
+ * 
+ */
+$message = "Hello, World!";
+echo "\n\$message : $message";
+$replaced_message = preg_replace("/World!/i","Universe!",$message);
+echo "\n\$replaced_message : $replaced_message\n";
+
+
+?>
+```
+
+***Output : 00.regex.php***
+```
+The Sentence : 
+-------------------------Hello, Universe! I am Tazri. Do you know me? Here I come to tell you about myself. I am nothing but a human. Who is totally borken inside and show the outside front of world that everything ok with a smile.
+-------------------------
+$name_regex : /Tazri/i
+preg_match($name_regex,$sentence) : 1
+preg_match_all('/am?/i',$sentence) : 10
+
+$message : Hello, World!
+$replaced_message : Hello, Universe!
+```
+
+
+## date
+***Program : 01.date.php***
+```
+<?php 
+/**
+ * date(format,timestamp)
+ * 
+ * d - day of month
+ * m - month of year
+ * Y - represents a year in four digit (in four digits)
+ * l - represents the day of the week
+ * H - hour 24 format
+ * h - hour 12 format with leading zeros
+ * i - minutes with leading zeros
+ * s - secound with leading zeros
+ * a - lowercase ante merdiem and post meridiem (am or pm)
+ * 
+ */
+
+echo "Date : ".date("> Y-m-d (l) <")."\n";
+echo "TIME : ".date("H:i:s")."\n";
+echo "TIME(12) : ".date("h-i-s-a")."\n";
+
+/**
+ * date_default_timezone_set("Bangladesh/Dhaka");
+ * This function use for set time zone.
+ * 
+ */
+
+?>
+```
+
+***Output : 01.date.php***
+```
+Date : > 2022-05-24 (Tuesday) <
+TIME : 14:47:40
+TIME(12) : 02-47-40-pm
+```
+
+## include and require
+***Program : 02.include_require.php***
+```php
+<?php
+/**
+ * include and require both work as well
+ * include can not throw error if file dose not exist
+ * but 
+ * require throw error if file dose not exist.
+ * 
+ */
+// include "./lib/lib.php";
+require "./lib/lib.php";
+
+echo "hello(\"Alyath\") : ". hello("Alyath");
+echo "sum(32,33) : ",sum(32,33),"\n";
+
+?>
+```
+
+***Output : 02. include_require.php***
+```
+hello("Alyath") : Hello, Alyath!
+sum(32,33) : 65
+```
+
+# File_Handling
+Here I discuse about file handling in php. First see some file handling function : 
+
+***Program : 01.file_function.php***
+```php
+<?php
+/**
+ * $file = fopen("file_path","mode");
+ * 
+ * mode : 
+ * r - open the file for read only
+ * w - open the file for write only
+ * a - open the file for write only appending
+ * x - create a new file
+ * r+ - open a file for read/write
+ * w+ - open a file for read/write
+ * a+ - open a file for read/write appending
+ * x+ - creates a new file for read/write 
+ * 
+ * fclose($file)
+ * close the open file
+ * 
+ * fgets($file)
+ * read single line from file 
+ * 
+ * fread($file,size_to_read)
+ * here we use this code for read the file fread($file,$filesize("file_path"))
+ * 
+ * feof($file)
+ * check the file is end of file reached or not
+ * 
+ * fgetc($file)
+ * read single character from file
+ * 
+ * 
+ */
+
+// open the file
+$file_path = "./file/text.txt";
+$file = fopen($file_path,"r");
+
+// read the file
+$content = fread($file,filesize($file_path));
+echo "content : \n$content\n------------------\n";
+echo "feof(\$file) : ",feof($file),"\n";
+fclose($file);
+
+
+?>
+```
+
+***Output : 01.file_function***
+```
+content : 
+Here,
+it is a text
+nothing else
+hello.........................!
+------------------
+feof($file) :
+```
+
+## fwrite()
+***Program : 02.file_write.php***
+```php
+<?php
+// file write : 
+/**
+ * fwrite($file,$text)
+ * this function use to write file. Here example : 
+ * 
+ */
+
+ $file_path = "./file/new_file.txt";
+ $file = fopen($file_path,"x+");
+
+ // write the file
+ $text = "This is the simple text\nwhich is write in the file.\n...\n..\n.\nEasy.........\n----------------\n";
+ fwrite($file,$text);
+ fclose($file);
+
+ // open the file for read;
+ $file = fopen($file_path,"r");
+ echo "Text : \n";
+ echo fread($file,filesize($file_path));
+ fclose($file);
+?>
+```
+
+***Ouput : 2.file_write.php***
+```
+Text : 
+This is the simple text
+which is write in the file.
+...
+..
+.
+Easy.........
+----------------
 ```
