@@ -15,6 +15,7 @@ This is a simple documentation on php for me. I create this repository to note a
 - [Superglobals](#Superglobals)
 - [Methods](#Methods)
 - [File Handling](#File_Handling)
+- [OOP](#OOP)
 
 # Hello_World
 Here basic syntax to print hello world in php. 
@@ -1311,4 +1312,508 @@ which is write in the file.
 .
 Easy.........
 ----------------
+```
+
+# OOP
+Here I describe OOP in php for me.
+
+## Class
+***Program : 01.class.php***
+```php
+<?php
+// role declare class here
+/**
+ * class class_name{
+ *  // code goes here
+ * }
+ * 
+ */
+
+// here declare a class with two properties and some methods
+class Person{
+    // properties
+    public $name;
+    public $power;
+
+    // methods
+    function set_name($name = "ANONYMOUS"){
+        // access class properties inside the methods
+        $this->name = $name;
+    }
+
+    function set_power($powerr){
+        $this->power = $powerr;
+        // $power = $powerr; // not working here
+    }
+
+    function get_name(){
+        return $this->name;
+    }
+
+    function get_power(){
+        return $this->power;
+    }
+
+    function print(){
+        echo "$this->name($this->power)\n";
+    }
+
+}
+
+// create object
+$first_person = new Person();
+$first_person->set_name("Eren Yeager");
+$first_person->set_power("Attack Titan");
+$secound_person = new Person();
+$secound_person->set_name("Reinar");
+$secound_person->set_power("Armor Titan");
+
+// printing persons details
+echo "\$first_person-> print() : ";
+$first_person->print();
+echo "\$secound_person-> print() : ";
+$secound_person->print();
+
+// changing first person details by manual
+$first_person->name = "Levi Akerman";
+$first_person->power = "Akerman";
+echo "After change \$first_person-> print() : ";
+$first_person->print();
+
+/**
+ * object instanceof class
+ * this keyword use to checking object is instanceof class.
+ */
+echo "var_dump(\$first_person instanceof Person) : ";
+var_dump($first_person instanceof Person);
+
+?>
+```
+
+***Output : 01.class.php***
+```
+$first_person-> print() : Eren Yeager(Attack Titan)
+$secound_person-> print() : Reinar(Armor Titan)
+After change $first_person-> print() : Levi Akerman(Akerman)
+var_dump($first_person instanceof Person) : bool(true)
+```
+
+## __construct
+***Program : 02.constructor.php***
+```php
+<?php
+// here to declare constructor
+class Person{
+    public $name;
+    public $age;
+
+    // constructor
+    function __construct($name = "Anonymous",$age = 0){
+        $this->name = $name;
+        $this->age = $age;
+        
+    }
+    // print methods
+    function print(){
+        echo "$this->name($this->age)\n";
+    }
+}
+
+$person = new Person();
+$me = new Person("Md Tazri",19);
+echo "\$person->print : ";
+$person->print();
+echo "\$me->print : ";
+$me->print();
+?>
+```
+
+***Output : 02.constructor.php***
+```
+$person->print : Anonymous(0)
+$me->print : Md Tazri(19)
+```
+
+## __destruct
+***Program : 04.destructor.php***
+```php
+<?php 
+
+/**
+ * class Class_name{
+ * 
+ *  function __destruct(){
+ *      // destructor defination
+ *  }
+ * }
+ */
+
+class Person{
+    public $name;
+    public $age;
+
+    // constructor
+    function __construct($name="ANONYMOUS",$age="000"){
+        $this->name = $name;
+        $this->age = $age;
+    }
+
+    // method
+    function details(){
+        echo "$this->name($this->age)\n";
+    }
+
+    // destructor
+    function __destruct()
+    {
+        echo "$this->name is dead\n";
+    }
+}
+
+$anonymous = new Person();
+
+$anonymous->details();
+?>
+```
+
+***Output : 04.destructor.php***
+```
+ANONYMOUS(000)
+ANONYMOUS is dead
+```
+
+## access modifiers
+***Program : 03.access_modifiers.php***
+```php
+<?php 
+/**
+ * public -> can be accessed from everywhere. This is default
+ * protected -> can be accessed from the class and access from derived class
+ * private -> can be accessed only with in the class
+ *  
+ */
+
+// here example 
+class Person{
+    public $name; // it's public
+    protected $salary; // it's protected
+    private $age; // it private
+
+    // constructor
+    function __construct($name="ANONYMOUS",$salary=0,$age='unknow'){
+        $this->name = $name;
+        $this->salary = $salary;
+        $this->age = $age;
+    }
+
+    // method
+    function show_salary(){
+        echo "$this->name's Salary is $this->salary\n";
+    }
+    function show_age(){
+        echo "$this->name's age is $this->age\n";
+    }
+}
+
+//create person me
+$me = new Person("MD Tazri",100,19);
+echo "\$me->name : ",$me->name,"\n";
+
+// echo "\$me->salary : ",$me->salary,"\n"; // protected property, can not work here.
+// echo "\$me->age : ",$me->age,"\n"; // private property, can not work here.
+
+// get age and salary by method
+$me->show_salary();
+$me->show_age();
+
+?>
+```
+
+***Ouput : 03.access_modifiers.php***
+```
+$me->name : MD Tazri
+MD Tazri's Salary is 100
+MD Tazri's age is 19
+```
+
+## inheritance
+***Program : 05.inheritance.php***
+```php
+<?php
+
+/**
+ * inheritance syntax in php here : 
+ * class derived_class extends base_class{
+ *  public $public_property;
+ *  protected $protected_property;
+ *  private $private_property;
+ * 
+ *  function __construct(){ // it will override derived class constructor
+ *      parent::__construct() // call the parent constructor
+ *  }
+ * 
+ *  // method here
+ *  
+ *  funtion __destruct(){ // destruct also override
+ *  // destruct call at last when interpreter complate execute whole program.
+ *  }
+ * }
+ * 
+ */
+
+class Fruit{
+    public $name;
+    public $color;
+    
+    // constructor
+    function __construct($name,$color){
+        $this->name = $name;
+        $this->color = $color;
+    }
+
+    // some method
+    function details(){
+        echo "Fruits($this->name,$this->color)\n";
+    }
+}
+
+// inheriting class
+class Apple extends Fruit{
+    public $test;
+
+    // child construct
+    function __construct($color,$test){
+        // call the base class constructor
+        parent::__construct("Apple",$color);
+        $this->test = $test;
+    }
+
+    // derived method
+    public function apple_details(){
+        echo "APPLE($this->color,$this->test)\n";
+    }
+    
+}
+
+// create child object
+$my_apple = new Apple("Red","Sweet");
+
+$my_apple->details();
+$my_apple->apple_details();
+
+?>
+```
+
+***Output : 05.inheritance.php***
+```
+Fruits(Apple,Red)
+APPLE(Red,Sweet)
+```
+
+## final 
+***Program : 06.final.php***
+```php
+<?php 
+/**
+ * final is the keyword in php which is prevent inheritan from derived class.
+ * 
+ */
+
+final class Person{ // no one class can inherit it
+    function useless_person(){
+        echo "This is useless class and method.\n";
+    }
+}
+
+// try to inherting person and get error 
+class Student extends Person{ // must throw error.
+    function useless_student(){
+        echo "This is useless student and method\n";
+    }
+}
+?>
+```
+
+***Output : 06.final.php***
+```
+PHP Fatal error:  Class Student may not inherit from final class (Person) in /home/tazri/Documents/work-place/php/php/08.oop_php/06.final.php on line 18
+```
+
+## class constant
+***Program : 07.constant.php***
+```php
+<?php 
+/**
+ * // in php constant in class declear like
+ * class Class_name{
+ *  const constant_name = constant_value;
+ * 
+ *  function something_say(){
+ *      self::constant_name; // access constant inside the class self
+ *  }
+ *
+ * }
+ * 
+ * // access consant outside the class
+ * class_name::constant_name;
+ * 
+ */
+
+class Box{
+    const message = "This is useless message\n";
+
+    function what_message(){
+        echo "Message is : ",self::message;
+    }
+}
+
+echo "Box::message : ",Box::message;
+$box = new Box();
+$box->what_message();
+?>
+```
+
+***Output : 07.constant.php***
+```
+Box::message : This is useless message
+Message is : This is useless message
+```
+
+## Abstract Class
+***Program : 08.abstract.php***
+```php
+<?php
+
+use Person as GlobalPerson;
+
+/**
+ * // here deination of abstract class
+ * abstract class Class_name{
+ *  abstract protected function function_name(); // this function defination must be write inside the child class
+ *  abstract public function function_name(); // this function defination must be write inside the child class
+ * }
+ * 
+ * class Child_class extends Parent_class{
+ *  public function function_name(){
+ *      // write defnation
+ *  }
+ * 
+ * protected function fuction_name(){
+ *      // write defnation
+ * }
+ * }
+ */
+
+// parent class
+abstract class Person{
+    public $name;
+    public $age;
+
+    function __construct($name = "ANONYMOUS",$age = 0){
+        $this->name = $name;
+        $this->age = $age;
+    }
+
+    abstract protected function details() : string;
+}
+
+// child class
+class Student extends Person{
+    public function details():string{
+        return "Student($this->name,$this->age)\n";
+    }
+}
+
+class Employee extends Person{
+    public function details():string{
+        return "Employee($this->name,$this->age)\n";
+    }
+}
+
+// class Investor extends Person{ // this class will throw error because can not write defination about abstract method from parent class.
+//     function mesage(){
+//         echo "This is a mesage useless from investor\n";
+//     }
+// }
+
+$me = new Student("Md Tazri",19);
+$someone = new Employee("Nobody",22);
+
+echo "\$me->details() : ", $me->details();
+echo "\$somone->details() : ", $someone->details();
+
+?>
+```
+
+***Output : 08.abstract.php***
+```
+$me->details() : Student(Md Tazri,19)
+$somone->details() : Employee(Nobody,22)
+```
+
+## Interface 
+***Program : 09.interface.php***
+```php
+<?php
+/**
+ * interface look like abstract class but some difference bitween 
+ * interface and abstract class. here
+ * 1. interface can not have a properties. while abstract classes can.
+ * 2. all interface method must be public. while abstract class method public or protected
+ * 3. all method in interface are abstract, so they cannot be implemented in code.
+ * 4. abstract keyword use not neccessary.
+ * 5. classes can implement an interface while inheriting from another class at the same time.
+ * 
+ */
+
+/**
+ * interface syntax : 
+ * interface Interface_name{
+ *  public function method_name();
+ *  public function method_name_one();
+ * }
+ * 
+ * class Class_name implements interface_name{
+ *  // must write defination of interface abstract method.
+ * }
+ * 
+ */
+
+// create interface
+interface Animal{
+    public function make_sound();
+}
+
+// create class
+class Cat implements Animal{
+    public function make_sound(){
+        echo "Meow...!!Meooooooow.............!!!!\n";
+    }
+}
+
+class Dog implements Animal{
+    public function make_sound(){
+        echo "Bark.........!!! Bark............!!!!\n";
+    }
+}
+
+// class Tiger implements Animal{ // it will throw error because don't hame abstract method which is inside Animal interface is make_sound.
+//     public function details(){
+//         echo "This is useless tiger!!!!!!\n";
+//     }
+// }
+
+$cat = new Cat();
+$dog = new Dog();
+
+$cat->make_sound();
+$dog->make_sound();
+
+?>
+```
+
+***Output : 09.interfaces.php***
+```
+Meow...!!Meooooooow.............!!!!
+Bark.........!!! Bark............!!!!
 ```
