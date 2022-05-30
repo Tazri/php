@@ -1817,3 +1817,177 @@ $dog->make_sound();
 Meow...!!Meooooooow.............!!!!
 Bark.........!!! Bark............!!!!
 ```
+
+## Traits
+***Program : 10.traits.php***
+```php
+<?php
+/**
+ * php can support single level parent inheritance. That way traits come for.
+ * Here trait work like class but inherit multiple train in single class.
+ * Here syntax of traits : 
+ * 
+ * trait Trait_Name{
+ *  // some code
+ * }
+ * 
+ * // use trait
+ * class Class_Name{
+ *  use trait_name_one,trait_name_two;
+ * }
+ * 
+ */
+
+trait Person{
+    public $name;
+    public $age;
+
+    function set_person($name,$age){
+        $this->name = $name;
+        $this->age = $age;
+    }
+}
+
+class Student{
+    use Person;
+
+    function __construct($name="ANONYMOUS",$age="000"){
+        $this->set_person($name,$age);
+    }
+
+    function details(){
+        echo "STUDENT($this->name,$this->age)\n";
+    }
+}
+
+$me = new Student("Md Tazri");
+$me->details();
+
+?>
+```
+
+***Output : 10.traits.php***
+```
+STUDENT(Md Tazri,000)
+```
+
+## Static Method
+***Program : 11.static_method.php***
+```php
+<?php
+/**
+ * here defination of static method
+ * class Class_Name{
+ *  public static funciton method_name(){
+ *      // deination here
+ *    }
+ * 
+ *  function method(){
+ *          // call static method inside the class
+ *          self::method_name(); 
+ *    }
+ * }
+ * 
+ * // call static method
+ * Class_Name::method_name();
+ * 
+ * // call the static method from child class
+ * class Class_Name extends Parent_class{
+ *      function method(){
+ *          parent::static_method();
+ *      }
+ * }
+ * 
+ */
+
+class Box{
+    public static function message(){
+        echo "useless box it is!\n";
+    }
+
+    function show(){
+        self::message();
+    }
+}
+
+echo "Box::message() : ",Box::message();
+$box = new Box();
+$box->show();
+
+?>
+```
+
+***Output : 11.static_method.php***
+```
+Box::message() : useless box it is!
+useless box it is!
+```
+
+## iterator
+***Program : 13.iterator.php***
+```php
+<?php
+/**
+ * iterator must have this methods : 
+ * current() -> return the current value.
+ * key() -> return the key associated with the current in the list.
+ * next() -> moves the pointer to the next element in the list
+ * rewind() -> moves the pointer to the first element in the first
+ * valid() -> if the internal pointer is not pointing to element this should be return false, it return true in any other case
+ * 
+ */
+
+// create iterator 
+class Box implements Iterator{
+    private $items = [];
+    private $pointer = 0;
+
+    // constructor
+    public function __construct($items)
+    {
+        $this->items = array_values($items);
+    }
+    
+    // iterator method
+    function current()
+    {
+        // current position value
+        return $this->items[$this->pointer];
+    }
+
+    function next()
+    {
+        $this->pointer++;
+    }
+
+    function key()
+    {
+        return $this->pointer;
+    }
+
+    function valid()
+    {
+        return $this->pointer < count($this->items);
+    }
+
+    function rewind()
+    {
+        $this->pointer = 0;
+    }
+}
+
+$new_box = new Box(["Alyath","Anonymo","Focasa","Farabi"]);
+foreach($new_box as $name){
+    echo "Hello, $name";
+    echo PHP_EOL;
+}
+?>
+```
+
+***Output : 13.iterator.php***
+```
+Hello, Alyath
+Hello, Anonymo
+Hello, Focasa
+Hello, Farabi
+```
