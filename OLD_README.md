@@ -6,6 +6,8 @@
 # PHP Programming Language
 This is a simple documentation on php for me. I create this repository to note about what I learn about php. 
 
+> 🟢 I refactor this whole documentation for easy to read. I divide the old documentation into so many part. Here new documentation : [NEW README](./README.md)
+
 ## Table of Context
 - [Hello World](#Hello_World)
 - [Simple Variable](#Simple_Variable)
