@@ -15,6 +15,9 @@
  * fclose($file)
  * close the open file
  * 
+ * filesize($file_path_as_string)
+ * return the size of file
+ * 
  * fgets($file)
  * read single line from file 
  * 
@@ -33,6 +36,7 @@
 // open the file
 $file_path = "./file/text.txt";
 $file = fopen($file_path,"r");
+echo 'filesize($file) : ', filesize($file_path),"\n\n";
 
 // read the file
 $content = fread($file,filesize($file_path));
