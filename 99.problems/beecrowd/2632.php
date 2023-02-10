@@ -1,103 +1,57 @@
 <?php
-// function to figure out two point distane
-function calculate_distance($one,$two){// one, and two is point array, one [x,y],two [x,y]
-    $diff_x = $one[0] - $two[0];
-    $diff_y = $one[1] - $two[1];
+// Rect class
+class Rect{
+    public $wdith,
+    $height,
+    $rx,
+    $ry,
+    $rxw, // rx + width
+    $ryh; // ry + height
+    
+    function __construct()
+    {
+        $words = explode(" ",readline());
 
-    $square_diff_x = $diff_x * $diff_x;
-    $square_diff_y = $diff_y * $diff_y;
+        // set width and height;
+        $this->wdith = (int) $words[0];
+        $this->height = (int) $words[1];
 
-    $distance = sqrt($square_diff_x+$square_diff_y);
-    return $distance;
-}
+        // set position rx,ry
+        $this->rx = (int)$words[2]; // position x
+        $this->ry = (int)$words[3]; // position y
 
-// damage for every spell
-$spell_list = [
-  //"spell_name"=>[damage,[radius1,radius2,radius3]] positition = level - 1
-    "fire" => [200,[20,30,50]],
-    "water" => [300,[10,25,40]],
-    "earth" => [400,[25,55,70]],
-    "air" => [100,[18,38,60]]
-];
-
-// fucntion get rectangle width,height and position 
-function get_rect(){
-    /**
-     * return a array
-     * [
-     *  w -> width:int
-     *  h -> height:int,
-     *  [rx,ry] -> position x and y from lower left corner
-     * 
-     * ]
-     */
-
-    $words = explode(" ",readline());
-
-    return [
-            (int)$words[0], // width
-            (int)$words[1], // height
-            [
-             (int)$words[2], // rx -> x position from lower left corner
-             (int)$words[3] // ry -> y position from lower right corner
-            ]
-     ];
-}
-
-// function to get spell with damge and radius
-function get_spell($spell_list){
-    /**
-     * [damage:int,
-     *  r:int,
-     *  [cx,cy]], r mean radius
-     * cx,cy -> point the circle position
-     * 
-     */
-
-     $words = explode(" ",readline());
-     
-     $damage = $spell_list[$words[0]][0];
-     $level = (int)$words[1];
-     $radius = $spell_list[$words[0]][1][$level-1];
-     $circle_point = [(int)$words[2],(int)$words[3]]; // (cx,cy)
-
-     return [$damage,$radius,$circle_point];
-}
-
-// function to get TRC,TLC,BLC,BRC
-function get_all_rect_point($rect){
-    /**
-     * TRC -> Top Right Corner
-     * TLC -> Top Left Corner
-     * BLC -> Bottom Left Corner
-     * BRC -> Bottom Right Corner
-     * 
-     */
-
-     // extract data from $rect
-     $w = $rect[0]; // width
-     $h = $rect[1]; // height
-     $rx = $rect[2][0]; // x position of rect
-     $ry = $rect[2][1]; // y position of rect
-
-     $BLC = [$rx,$ry];
-     $BRC = [$rx+$w,$ry];
-     $TLC = [$rx,$ry+$h];
-     $TRC = [$rx+$w,$ry+$h];
-
-     return [$TRC,$TLC,$BLC,$BRC];
-}
-
-// return smallest number from array
-function smallest($array){
-    $min = $array[0];
-
-    foreach($array as $item){
-        if($item < $min){
-            $min = $item;
-        }
+        // set upper lower
+        $this->rxw = $this->rx + $this->wdith; // rx + w
+        $this->ryh = $this->ry + $this->height; // ry + h
     }
-    return $min;
+}
+
+// speel class
+class Spell{
+    // damage for every spell
+    public $spell_list = [
+      //"spell_name"=>[damage,[radius1,radius2,radius3]] positition = level - 1
+        "fire" => [200,[20,30,50]],
+        "water" => [300,[10,25,40]],
+        "earth" => [400,[25,55,70]],
+        "air" => [100,[18,38,60]]
+    ];
+
+    public $damage,
+           $radius, // radius
+           $cx, // circle position x
+           $cy; // circle postion y
+
+    function __construct()
+    {
+        $words = explode(" ",readline());
+
+        $this->damage = $this->spell_list[$words[0]][0];
+        $level = (int)$words[1];
+        $this->radius = $this->spell_list[$words[0]][1][$level-1];
+        $this->cx = (int)$words[2];
+        $this->cy = (int)$words[3];
+    }
 }
 
 // start to solve the main problem
@@ -105,29 +59,118 @@ $testcase = (int)readline();
 
 while($testcase--){
     // get rect and spell
-    $rect = get_rect();
-    $spell = get_spell($spell_list);
+    $rect = new Rect();
+    $spell = new Spell();
+    $is_damaged = false;
 
-    // get all rectangle corner
-    $all_corner = get_all_rect_point($rect);
-    $cp = $spell[2]; // circle point
-    
-    // calculate all distance from circle point to all rect point
-    $all_distance = [];
-    foreach($all_corner as $corner){
-        array_push($all_distance,calculate_distance($corner,$cp));
+    // check circle point under the rect
+    if($spell->cx >= $rect->rx && // first two determine that 
+       $spell->cx <= $rect->rxw && // circle point is under the rect in horizontal
+       $spell->cy >= $rect->ry && // next two dtermine that circle point is
+       $spell->cy <= $rect->ryh){ // under the rect vertially
+        echo "$spell->damage\n";
+        continue; // already demaged so continue
     }
 
-    // smalest distance
-    $smallest_distance = smallest($all_distance);
-    $spell_radius = $spell[1];
-    $spell_damage = $spell[0];
+    // check circle cross the rect in horizontally
+    $y_pdiff = pow($rect->ry-$spell->cy,2); // square of rect y difference with circle y
+    $uy_pdiff = pow($rect->ryh-$spell->cy,2); // square of upper rect y difference with circle y
 
-    if($smallest_distance <= $spell_radius){
-        echo "$spell_damage\n";
-    }else{
+    for($rx = $rect->rx;$rx <= $rect->rxw;$rx++){
+        $rx_pdiff = pow($rx-$spell->cx,2); // square of rect x difference with circle x
+        $distance_one = sqrt($rx_pdiff+$y_pdiff);
+        $distance_two = sqrt($rx_pdiff+$uy_pdiff);
+
+        // check the circle cross the rect horizontally
+        if($spell->radius >= $distance_one ||
+           $spell->radius >= $distance_two){
+            echo "$spell->damage\n";
+            $is_damaged = true;
+            break;
+        }
+    }
+
+    // if it already damaged
+    if($is_damaged){
+        continue;
+    }
+
+    // check circle cross the rect in vertically
+    $x_pdiff = pow($rect->rx-$spell->cx,2); // square of rect x difference with circle x
+    $ux_pdiff = pow($rect->rxw-$spell->cx,2); // square of upper rect x difference with circle x
+    
+    for($ry = $rect->ry;$ry <= $rect->ryh;$ry++){
+        $ry_pdiff = pow($ry-$spell->cy,2);
+        $distance_one = sqrt($ry_pdiff+$x_pdiff);
+        $distance_two = sqrt($ry_pdiff+$ux_pdiff);
+
+        // check the circle cross the rect vertically
+        if($spell->radius >= $distance_one ||
+           $spell->radius >= $distance_two){
+            echo "$spell->damage\n";
+            $is_damaged = true;
+            break;
+        }
+    }
+
+    // if rect dose not damaged
+    if(!$is_damaged){
         echo "0\n";
     }
+    
 }
+
+/**
+Problem : Magic and Sword
+In the Magic and Sword Tower defense, the player can cast area spells to defeat the enemy units. 
+The spells are elemental: fire, water, air and earth, and the affected region is determined by a 
+circle whose radius depends on the level of the spell.
+
+The table below lists each spell, damage and its radius per level:
+
+         spell        damage  level1  lvel2  level3
+        "fire"    =>   200      20     30      50
+        "water"   =>   300      10     25      40
+        "earth"   =>   400      25     55      70
+        "air"     =>   100      18     38      60
+
+The enemy units are delimited by a rectangle of width w and height h, with the lower left corner 
+positioned at the point (x0, y0). The enemy will suffer damage if their bounding rectangle has any 
+intercession with the area defined by the spell circle.
+
+Given the position and the bounding rectangle of the enemy unit, the center of the explosion, the 
+identifier and level of the  spell, determine the damage to the unit. If the unit is out of the 
+spell range, the damage is equal to zero.
+
+Input :
+The input consists of T (1 ≤ T ≤ 1000) test cases, where the value of T is reported in the first 
+line of the input. Each test case consists of two lines. The first contains four integers representing 
+the dimensions w and h (1 ≤ w, h ≤ 1000) of the rectangle and the coordinates x0 and y0 
+(0 ≤ x0, y0 ≤ 1000) from the lower left corner. The second line of the test case contains a 
+string with the spell identifier (fire, water, earth and air), the level N of this spell 
+(1 ≤ N ≤ 3) and the coordinates cx e cy (0 ≤ cx, cy ≤ 1000) from the center of the explosion area.
+
+Output : 
+For each test case, the output must be the value of the damage received by the unit, 
+followed by a line break.
+
+Input Sample : 
+4
+10 10 50 50
+fire 1 85 55
+10 10 50 50
+fire 2 85 55
+10 10 50 100
+water 3 100 100
+10 10 50 100
+air 3 100 100
+
+Output Sample : 
+0
+200
+300
+100
+
+*/
 
 ?>
